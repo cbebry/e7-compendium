@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <navigation></navigation>
+    <navigation class="fixed-top"></navigation>
     <router-view/>
-    <the-footer></the-footer>
+    <the-footer class="fixed-bottom"></the-footer>
   </div>
 </template>
 
 <script>
 import Navigation from '@/components/Navigation'
 import TheFooter from '@/components/TheFooter'
-  
+
 export default {
   name: 'app',
   components: {
@@ -26,6 +26,10 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #B0BBC8;
 }
+body {
+  background-color: #252B35;
+}
+
 </style>
