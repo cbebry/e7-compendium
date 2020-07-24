@@ -1,30 +1,30 @@
 <template>
-  <b-navbar id="nav" toggleable="lg" type="dark" variant="info">
+  <b-navbar id="nav" toggleable="lg" type="dark" variant="dark">
     <div class="container">
       <b-navbar-brand>
-        <router-link to="/" role="link">Home</router-link>
+        <router-link to="/" role="link">E7 Conpendium</router-link>
       </b-navbar-brand>
 
-      <b-navbar-toggle target="nav_collapse" />
+      <b-navbar-toggle target="nav_collapse"/>
 
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav class="ml-auto" role="menu">
           <li class="nav-item" role="menuitem">
-            <router-link role="link" class="nav-link" to="/">Mechanics</router-link>
+            <router-link role="link" class="nav-link" to="/mechanics">Mechanics</router-link>
           </li>
           <b-nav-item-dropdown text="Game Data" right>
-            <b-dropdown-item href="#">Heroes</b-dropdown-item>
-            <b-dropdown-item href="#">Artifacts</b-dropdown-item>
-            <b-dropdown-item href="#">Items</b-dropdown-item>
+            <router-link to="/search" role="link" tag="b-dropdown-item">Heroes</router-link>
+            <router-link to="/search" role="link" tag="b-dropdown-item">Artifacts</router-link>
+            <router-link to="/search" role="link" tag="b-dropdown-item">Items</router-link>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Resources" right>
-            <b-dropdown-item href="#">Beginner Progression</b-dropdown-item>
-            <b-dropdown-item href="#">Raid</b-dropdown-item>
-            <b-dropdown-item href="#">Hunt</b-dropdown-item>
-            <b-dropdown-item href="#">Expedition</b-dropdown-item>
+            <router-link to="/guides" role="link" tag="b-dropdown-item">Beginner Progression</router-link>
+            <router-link to="/guides" role="link" tag="b-dropdown-item">Raid</router-link>
+            <router-link to="/guides" role="link" tag="b-dropdown-item">Hunt</router-link>
+            <router-link to="/guides" role="link" tag="b-dropdown-item">Expedition</router-link>
           </b-nav-item-dropdown>
-          <b-nav-item-dropdown text="Lang" right>
-            <b-dropdown-item href="#">EN</b-dropdown-item>
+          <b-nav-item-dropdown text="Tools" right>
+            <router-link to="/" role="link" tag="b-dropdown-item">Calculator</router-link>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -36,11 +36,32 @@
 export default {
   name: 'navigation',
   props: {
-    msg: String
+    msg: String,
   }
 }
+
 </script>
 
 <style lang="less">
 @import '~../less/variables.less';
+// Title properties
+a {
+  color: #B0BBC8;
+}
+a:hover {
+  color: #f1f1f1;
+  text-decoration: none;
+}
+// Drop-down menu properties
+.dropdown-menu {
+  background-color: #343a40;
+}
+.dropdown-item {
+  color: #B0BBC8;
+  background-color: #343a40;
+}
+.dropdown-item:hover {
+  color: #B0BBC8;
+  background-color: #212529;
+}
 </style>
