@@ -1,6 +1,6 @@
 <template>
-  <div id="search">
-test
+  <div class="search">
+    search page
   </div>
 </template>
 
@@ -8,10 +8,11 @@ test
 export default {
   name: 'search',
   components: {
-
+    //
   }
 }
 </script>
+
 <style scoped lang="less">
 @import '~../less/variables.less';
 .search {

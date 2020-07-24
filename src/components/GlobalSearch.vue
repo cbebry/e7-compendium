@@ -21,15 +21,15 @@ export default {
 </script>
 
 <style scoped lang="less">
-    .global-search {
-      margin-left: 10vw;
-      margin-right: 10vw;
-    }
-    .global-search--search-term {
-      width: 100%;
-      max-width: 500px;
-    }
-    .global-search--form-wrap {
-      width: 100%;
-    }
+.global-search {
+  margin-left: 10vw;
+  margin-right: 10vw;
+}
+.global-search--search-term {
+  width: 100%;
+  max-width: 500px;
+}
+.global-search--form-wrap {
+  width: 100%;
+}
 </style>

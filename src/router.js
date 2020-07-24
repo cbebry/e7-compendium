@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Home from './views/Home'
+import Search from './views/search'
+import Mechanics from './views/mechanics'
+import Guides from './views/guides'
 
 Vue.use(Router)
 
@@ -16,17 +19,17 @@ export default new Router({
     /* Search */{
       path: '/search',
       name: 'search',
-      component: () => import('./views/search.vue')
+      component: Search
     },
     /* Mechanics */{
-      path: '/',
+      path: '/mechanics',
       name: 'mechanics',
-      component: () => import('./views/mechanics.vue')
+      component: Mechanics
     },
     /* Guides */{
-      path: '/',
+      path: '/guides',
       name: 'guides',
-      component: () => import('./views/guides.vue')
+      component: Guides
     },
 
     /* About */{

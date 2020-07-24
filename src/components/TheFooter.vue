@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'theFooter',
+  name: 'the-footer',
   props: {
     msg: String
   }

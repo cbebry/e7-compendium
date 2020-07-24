@@ -2,7 +2,7 @@
   <b-navbar id="nav" toggleable="lg" type="dark" variant="dark">
     <div class="container">
       <b-navbar-brand>
-        <router-link to="/" role="link">E7 Conpendium</router-link>
+        <router-link to="/" role="link">E7 Compendium</router-link>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav_collapse"/>

@@ -2,7 +2,7 @@
   <div class="home">
     <div class="bg active" style="background-image: url('https://lh6.googleusercontent.com/qVOGaEVgZtFe_Dv-xxq_SrQBHp5UR8j4-NGf_wiDB693TxKpbVHtwLwTSggcpc3TCjpgBDgk8altdthaSCAdNzq-Rk_xP_TJfisjCQvg887Sf-0QV_JBOVLc4cpfdFv-IW7iRmKa')"></div>
     <div class="justify-content-center">
-      <global-search class="searchbar"></global-search>
+      <global-search class="search-bar"></global-search>
     </div>
     <div class="home-text d-flex justify-content-center">
       <div class="text-left">
@@ -28,7 +28,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import GlobalSearch from '@/components/GlobalSearch.vue'
 
 export default {
@@ -46,21 +45,20 @@ export default {
     background: linear-gradient(black, 1vh, @bgcolor);
 }
 .bg {
-  background-color: #000;
-  opacity: 0.25;
-  height: 50vh;
-  min-height: 300px;
-  background: no-repeat center center scroll;
-  -webkit-box-shadow: inset 0 0 30px #000;
-  -moz-box-shadow: inset 0 0 30px #000;
-  box-shadow: inset 0 0 30px #000;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  z-index: -1;
+    opacity: 0.25;
+    height: 50vh;
+    min-height: 300px;
+    background: #000 no-repeat scroll center center;
+    -webkit-box-shadow: inset 0 0 30px #000;
+    -moz-box-shadow: inset 0 0 30px #000;
+    box-shadow: inset 0 0 30px #000;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    z-index: -1;
 }
-.searchbar {
+.search-bar {
   display: block;
   position: relative;
   margin-top: -28vh;
