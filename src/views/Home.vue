@@ -1,40 +1,54 @@
 <template>
-  <div class="home">
-    <div class="bg active" style="background-image: url('https://lh6.googleusercontent.com/qVOGaEVgZtFe_Dv-xxq_SrQBHp5UR8j4-NGf_wiDB693TxKpbVHtwLwTSggcpc3TCjpgBDgk8altdthaSCAdNzq-Rk_xP_TJfisjCQvg887Sf-0QV_JBOVLc4cpfdFv-IW7iRmKa')"></div>
-    <div class="justify-content-center">
-      <global-search class="search-bar"></global-search>
+    <div class="home">
+        <div
+            class="bg active"
+            style="
+                background-image: url('https://lh6.googleusercontent.com/qVOGaEVgZtFe_Dv-xxq_SrQBHp5UR8j4-NGf_wiDB693TxKpbVHtwLwTSggcpc3TCjpgBDgk8altdthaSCAdNzq-Rk_xP_TJfisjCQvg887Sf-0QV_JBOVLc4cpfdFv-IW7iRmKa');
+            "
+        ></div>
+        <div class="justify-content-center">
+            <global-search class="search-bar"></global-search>
+        </div>
+        <div class="home-text d-flex justify-content-center">
+            <div class="text-left">
+                <p>
+                    Epic7Compendium aims to be the one shop shop for heirs looking for information
+                    on Epic Seven.
+                </p>
+                <strong>Current Features</strong>
+                <ul>
+                    <li>Hero Information</li>
+                    <li>Artifact Information</li>
+                    <li>Mechanics Details</li>
+                    <li>Guides</li>
+                </ul>
+                <strong>Planned Additions</strong>
+                <ul>
+                    <li>Morale Calculator</li>
+                    <li>Damage Calculator</li>
+                    <li>Language Support</li>
+                </ul>
+                <p><i>Changelog: added basic functions</i></p>
+                <small>
+                    <p>
+                        Maintained by @ichinoseKuri (
+                        <i>Discord ID: 『Kuri』#0002</i>
+                        )
+                    </p>
+                </small>
+            </div>
+        </div>
     </div>
-    <div class="home-text d-flex justify-content-center">
-      <div class="text-left">
-          <p>Epic7Compendium aims to be the one shop shop for heirs looking for information on Epic Seven.</p>
-          <strong>Current Features</strong>
-          <ul>
-            <li>Hero Information</li>
-            <li>Artifact Information</li>
-            <li>Mechanics Details</li>
-            <li>Guides</li>
-          </ul>
-          <strong>Planned Additions</strong>
-          <ul>
-            <li>Morale Calculator</li>
-            <li>Damage Calculator</li>
-            <li>Language Support</li>
-          </ul>
-          <p><i>Changelog: added basic functions</i></p>
-          <small><p>Maintained by @ichinoseKuri (<i>Discord ID: 『Kuri』#0002</i>)</p></small>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
 import GlobalSearch from '@/components/GlobalSearch.vue'
 
 export default {
-  name: 'home',
-  components: {
-    GlobalSearch
-  }
+    name: 'home',
+    components: {
+        GlobalSearch
+    }
 }
 </script>
 
@@ -59,15 +73,14 @@ export default {
     z-index: -1;
 }
 .search-bar {
-  display: block;
-  position: relative;
-  margin-top: -28vh;
-  min-width: 80vw;
+    display: block;
+    position: relative;
+    margin-top: -28vh;
+    min-width: 80vw;
 }
 .home-text {
-  position: relative;
-  margin-right: 15vw;
-  margin-top: 27vh;
+    position: relative;
+    margin-right: 15vw;
+    margin-top: 27vh;
 }
-
 </style>

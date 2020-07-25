@@ -1,8 +1,8 @@
 <template>
-  <div class="mechanics">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <global-search></global-search>
-  </div>
+    <div class="mechanics">
+        <img alt="Vue logo" src="../assets/logo.png" />
+        <global-search></global-search>
+    </div>
 </template>
 
 <script>
