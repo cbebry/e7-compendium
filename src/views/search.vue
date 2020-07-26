@@ -1,7 +1,9 @@
 <template>
     <div class="search">
         <div class="search-form">
+
             <!-- Get Name -->
+
             <label for="search-form-name">
                 Name:
                 <b-form-input
@@ -11,6 +13,7 @@
                     trim
                 ></b-form-input>
             </label>
+
             <!-- Get Grade -->
             <b-form-group label="Grade(s)" >
                 <b-form-radio-group
@@ -34,6 +37,30 @@
                     :options="elementOptions"
                     buttons
                 ></b-form-radio-group>
+
+
+            <b-form-group label="Grade(s)">
+                <b-form-checkbox-group
+                    v-model="heroSearchForm.grades"
+                    :options="gradeOptions"
+                    buttons
+                ></b-form-checkbox-group>
+            </b-form-group>
+
+            <b-form-group label="Role(s)">
+                <b-form-checkbox-group
+                    v-model="heroSearchForm.roles"
+                    :options="roleOptions"
+                    buttons
+                ></b-form-checkbox-group>
+            </b-form-group>
+
+            <b-form-group label="Element(s)">
+                <b-form-checkbox-group
+                    v-model="heroSearchForm.elements"
+                    :options="elementOptions"
+                    buttons
+                ></b-form-checkbox-group>
             </b-form-group>
 
             <b-button @click="clearSearch()" variant="danger">Clear</b-button>
