@@ -1,9 +1,7 @@
 <template>
     <div class="search">
         <div class="search-form">
-
             <!-- Get Name -->
-
             <label for="search-form-name">
                 Name:
                 <b-form-input
@@ -15,30 +13,6 @@
             </label>
 
             <!-- Get Grade -->
-            <b-form-group label="Grade(s)" >
-                <b-form-radio-group
-                    v-model="heroSearchForm.grades"
-                    :options="gradeOptions"
-                    buttons
-                ></b-form-radio-group>
-            </b-form-group>
-            <!-- Get Role -->
-            <b-form-group label="Role(s)" id="classtag">
-                <b-form-radio-group
-                    v-model="heroSearchForm.roles"
-                    :options="roleOptions"
-                    buttons
-                ></b-form-radio-group>
-            </b-form-group>
-            <!-- Get Element -->
-            <b-form-group label="Element(s)">
-                <b-form-radio-group
-                    v-model="heroSearchForm.elements"
-                    :options="elementOptions"
-                    buttons
-                ></b-form-radio-group>
-
-
             <b-form-group label="Grade(s)">
                 <b-form-checkbox-group
                     v-model="heroSearchForm.grades"
@@ -46,22 +20,24 @@
                     buttons
                 ></b-form-checkbox-group>
             </b-form-group>
-
-            <b-form-group label="Role(s)">
-                <b-form-checkbox-group
-                    v-model="heroSearchForm.roles"
-                    :options="roleOptions"
-                    buttons
-                ></b-form-checkbox-group>
+            <!-- Get Role -->
+            <b-form-group label="Role(s)" id="classtag">
+                <b-form-checkbox-group v-model="heroSearchForm.roles" buttons>
+                    <b-form-checkbox
+                        v-for="roleOption in roleOptions"
+                        :key="roleOption.value"
+                        :value="roleOption.value"
+                    >
+                        <img :src="renderSymbol(roleOption.symbol)" :alt="roleOption.text" />
+                    </b-form-checkbox>
+                </b-form-checkbox-group>
             </b-form-group>
 
-            <b-form-group label="Element(s)">
-                <b-form-checkbox-group
-                    v-model="heroSearchForm.elements"
-                    :options="elementOptions"
-                    buttons
-                ></b-form-checkbox-group>
-            </b-form-group>
+            <!-- Get Element -->
+            <search-filter-elements
+                @elementSelection="onElementSelection"
+                v-model="heroSearchForm.elements"
+            ></search-filter-elements>
 
             <b-button @click="clearSearch()" variant="danger">Clear</b-button>
             <b-button @click="search()" variant="primary">Search</b-button>
@@ -86,12 +62,15 @@
 <script>
 import heroSearchService from '@/services/hero-search.service'
 
+import SearchFilterElements from '@/components/search/search-filter-elements'
+
 import HeroSearchResultsHeader from '@/components/search/hero/hero-search-results-header'
 import HeroSearchResult from '@/components/search/hero/hero-search-result'
 import HeroSearchNoResults from '@/components/search/hero/hero-search-no-results'
 export default {
     name: 'search',
     components: {
+        SearchFilterElements,
         HeroSearchResultsHeader,
         HeroSearchResult,
         HeroSearchNoResults
@@ -106,19 +85,16 @@ export default {
                 { text: '5', value: '5' }
             ],
             roleOptions: [
-                { text: 'Warrior', value: 'warrior' },
-                { text: 'Knight', value: 'knight' },
-                { text: 'Ranger', value: 'ranger' },
-                { text: 'Thief', value: 'thief' },
-                { text: 'Mage', value: 'mage' },
-                { text: 'Soul Weaver', value: 'soul weaver' }
-            ],
-            elementOptions: [
-                { text: 'Fire', value: 'fire' },
-                { text: 'Earth', value: 'earth' },
-                { text: 'Ice', value: 'ice' },
-                { text: 'Light', value: 'light' },
-                { text: 'Dark', value: 'dark' }
+                { text: 'Warrior', value: 'warrior', symbol: 'symbol/icon_class_warrior.png' },
+                { text: 'Knight', value: 'knight', symbol: 'symbol/icon_class_knight.png' },
+                { text: 'Ranger', value: 'ranger', symbol: 'symbol/icon_class_ranger.png' },
+                { text: 'Thief', value: 'thief', symbol: 'symbol/icon_class_thief.png' },
+                { text: 'Mage', value: 'mage', symbol: 'symbol/icon_class_mage.png' },
+                {
+                    text: 'Soul Weaver',
+                    value: 'soul weaver',
+                    symbol: 'symbol/icon_class_soulweaver.png'
+                }
             ],
             heroSearchForm: {
                 name: '',
@@ -132,7 +108,6 @@ export default {
     methods: {
         search() {
             return heroSearchService.search(this.heroSearchForm).then((results) => {
-                console.log(results)
                 this.heroSearchResults = results
             })
         },
@@ -142,6 +117,12 @@ export default {
             this.heroSearchForm.elements = []
             this.heroSearchForm.roles = []
             this.heroSearchForm.grades = []
+        },
+        renderSymbol(symbol) {
+            return require(`@/assets/${symbol}`)
+        },
+        onElementSelection(value) {
+            this.heroSearchForm.elements = value
         }
     }
 }
@@ -152,5 +133,4 @@ export default {
 .search {
     background: linear-gradient(black, 1vh, @bgcolor);
 }
-
 </style>
