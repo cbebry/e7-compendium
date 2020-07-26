@@ -1,6 +1,9 @@
 <template>
     <div class="search">
         <div class="search-form">
+
+            <!-- Get Name -->
+
             <label for="search-form-name">
                 Name:
                 <b-form-input
@@ -10,6 +13,31 @@
                     trim
                 ></b-form-input>
             </label>
+
+            <!-- Get Grade -->
+            <b-form-group label="Grade(s)" >
+                <b-form-radio-group
+                    v-model="heroSearchForm.grades"
+                    :options="gradeOptions"
+                    buttons
+                ></b-form-radio-group>
+            </b-form-group>
+            <!-- Get Role -->
+            <b-form-group label="Role(s)" id="classtag">
+                <b-form-radio-group
+                    v-model="heroSearchForm.roles"
+                    :options="roleOptions"
+                    buttons
+                ></b-form-radio-group>
+            </b-form-group>
+            <!-- Get Element -->
+            <b-form-group label="Element(s)">
+                <b-form-radio-group
+                    v-model="heroSearchForm.elements"
+                    :options="elementOptions"
+                    buttons
+                ></b-form-radio-group>
+
 
             <b-form-group label="Grade(s)">
                 <b-form-checkbox-group
@@ -124,4 +152,5 @@ export default {
 .search {
     background: linear-gradient(black, 1vh, @bgcolor);
 }
+
 </style>
