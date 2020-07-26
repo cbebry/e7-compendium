@@ -1,68 +1,115 @@
 <template>
-    <div class="search">
-        <div class="search-form">
-            <!-- Get Name -->
-            <label for="search-form-name">
-                Name:
-                <b-form-input
-                    id="search-form-name"
-                    v-model="heroSearchForm.name"
-                    placeholder="Name"
-                    trim
-                ></b-form-input>
-            </label>
+  <div class="search">
+    <div class="container grid-side-500">
+        <!-- Search Options -->
+        <div class="row">
+            <div class="col">
+              <!-- Get Name -->
+              <div>
+                <label for="search-form-name">
+                    Name:
+                    <b-form-input
+                        id="search-form-name"
+                        v-model="heroSearchForm.name"
+                        placeholder="Name"
+                        trim
+                        class="input-form"
+                    ></b-form-input>
+                </label>
+              </div>
 
-            <!-- Get Grade -->
-            <b-form-group label="Grade(s)">
-                <b-form-checkbox-group
-                    v-model="heroSearchForm.grades"
-                    :options="gradeOptions"
-                    buttons
-                ></b-form-checkbox-group>
-            </b-form-group>
-            <!-- Get Role -->
-            <b-form-group label="Role(s)" id="classtag">
-                <b-form-checkbox-group v-model="heroSearchForm.roles" buttons>
-                    <b-form-checkbox
-                        v-for="roleOption in roleOptions"
-                        :key="roleOption.value"
-                        :value="roleOption.value"
-                    >
-                        <img :src="renderSymbol(roleOption.symbol)" :alt="roleOption.text" />
-                    </b-form-checkbox>
-                </b-form-checkbox-group>
-            </b-form-group>
+              <!-- ### Buttons update upon clicking elsewhere on the page ### -->
+              <!-- ### Appearence should update on click for clairity ### -->
 
-            <!-- Get Element -->
-            <search-filter-elements
+              <!-- ### Basic Options ### -->
+
+              <!-- Get Element Component -->
+              <div>
+                <search-filter-elements
                 @elementSelection="onElementSelection"
                 v-model="heroSearchForm.elements"
-            ></search-filter-elements>
+                ></search-filter-elements>
+              </div>
+              <!-- Get Class Component -->
+              <div>
+                <search-filter-classes
+                @elementSelection="onClassSelection"
+                v-model="heroSearchForm.classes"
+                ></search-filter-classes>
+              </div>
+              <!-- Get Grade Component -->
+                <!-- ### Number labels need to be fixed ### -->
+              <div>
+                <search-filter-grades
+                    @elementSelection="onGradeSelection"
+                    v-model="heroSearchForm.grades"
+                ></search-filter-grades>
+              </div>
 
-            <b-button @click="clearSearch()" variant="danger">Clear</b-button>
-            <b-button @click="search()" variant="primary">Search</b-button>
+              <!-- Search Results Options-->
+              <!-- ### Should become redundant as list will update on click ### -->
+              <div>
+                <b-button @click="clearSearch()" variant="danger">Clear</b-button>
+                <b-button @click="search()" variant="primary">Search</b-button>
+              </div>
+
+
+              <!-- ### Advanced Options ### -->
+              <h1 />--- Test components ---<h1 />
+              <!-- Get Zodiac Component -->
+
+              <!-- ### Trying to see what is best for visual clarity and ease of access ### -->
+              <!-- Get Imprint Component -->
+              <div>
+                <b-form-group id="input-group-3" label="Imprint:" label-for="input-3">
+                  <b-form-select
+                    id="input-3"
+                    class="input-form"
+                    v-model="heroSearchForm.imprint"
+                    :options="imprints"
+                    required
+                    multiple
+                  ></b-form-select>
+                </b-form-group>
+              </div>
+              <!-- Get Imprint-Focus Component -->
+              <div>
+                <b-form-checkbox v-model="checked" name="check-button" switch>Attack</b-form-checkbox>
+                <b-form-checkbox v-model="checked" name="check-button" switch>Health</b-form-checkbox>
+                <b-form-checkbox v-model="checked" name="check-button" switch>Defense</b-form-checkbox>
+                <b-form-checkbox v-model="checked" name="check-button" switch>Speed</b-form-checkbox>
+              </div>
+
+              <!-- Get Attribute Component -->
+                <!-- ### Placeholder for other sorting methods such as sorting by debuff etc. ### -->
+
+          </div>
         </div>
-        <hr />
-        <div>
-            <div class="hero-search-results">
-                <hero-search-results-header></hero-search-results-header>
-                <hero-search-result
-                    v-for="heroSearchResult in heroSearchResults"
-                    :key="heroSearchResult.ID"
-                    :hero="heroSearchResult"
-                ></hero-search-result>
-                <hero-search-no-results
-                    v-show="heroSearchResults.length === 0"
-                ></hero-search-no-results>
-            </div>
+
+
+        <!-- Search Results -->
+        <div class="hero-search-results">
+          <hero-search-results-header></hero-search-results-header>
+          <hero-search-result
+          v-for="heroSearchResult in heroSearchResults"
+          :key="heroSearchResult.ID"
+          :hero="heroSearchResult"
+          ></hero-search-result>
+          <hero-search-no-results
+          v-show="heroSearchResults.length === 0"
+          ></hero-search-no-results>
         </div>
+        <!-- End Search Results -->
+
+      </div>
     </div>
 </template>
 
 <script>
 import heroSearchService from '@/services/hero-search.service'
-
 import SearchFilterElements from '@/components/search/search-filter-elements'
+import SearchFilterClasses from '@/components/search/search-filter-classes'
+import SearchFilterGrades from '@/components/search/search-filter-grades'
 
 import HeroSearchResultsHeader from '@/components/search/hero/hero-search-results-header'
 import HeroSearchResult from '@/components/search/hero/hero-search-result'
@@ -71,37 +118,37 @@ export default {
     name: 'search',
     components: {
         SearchFilterElements,
+        SearchFilterClasses,
+        SearchFilterGrades,
         HeroSearchResultsHeader,
         HeroSearchResult,
         HeroSearchNoResults
     },
     data() {
         return {
-            gradeOptions: [
-                { text: '1', value: '1' },
-                { text: '2', value: '2' },
-                { text: '3', value: '3' },
-                { text: '4', value: '4' },
-                { text: '5', value: '5' }
-            ],
-            roleOptions: [
-                { text: 'Warrior', value: 'warrior', symbol: 'symbol/icon_class_warrior.png' },
-                { text: 'Knight', value: 'knight', symbol: 'symbol/icon_class_knight.png' },
-                { text: 'Ranger', value: 'ranger', symbol: 'symbol/icon_class_ranger.png' },
-                { text: 'Thief', value: 'thief', symbol: 'symbol/icon_class_thief.png' },
-                { text: 'Mage', value: 'mage', symbol: 'symbol/icon_class_mage.png' },
-                {
-                    text: 'Soul Weaver',
-                    value: 'soul weaver',
-                    symbol: 'symbol/icon_class_soulweaver.png'
-                }
-            ],
             heroSearchForm: {
                 name: '',
                 elements: [],
-                roles: [],
-                grades: []
+                classes: [],
+                grades: [],
+                imprint: [],
             },
+            imprints: [
+              {text: 'Imprint', value: null},
+              'Attack',
+              'Defense',
+              'Health',
+              'Speed',
+              'CritRate',
+              'CritDamage',
+              'Effectiveness',
+              'Effect Resistance',
+              'Dual Attack Chance',
+              'Attack%',
+              'Defense%',
+              'Health%'
+            ],
+
             heroSearchResults: []
         }
     },
@@ -115,7 +162,7 @@ export default {
             this.heroSearchResults = []
             this.heroSearchForm.name = ''
             this.heroSearchForm.elements = []
-            this.heroSearchForm.roles = []
+            this.heroSearchForm.classes = []
             this.heroSearchForm.grades = []
         },
         renderSymbol(symbol) {
@@ -123,7 +170,13 @@ export default {
         },
         onElementSelection(value) {
             this.heroSearchForm.elements = value
-        }
+        },
+        onClassSelection(value) {
+            this.heroSearchForm.classes = value
+        },
+        onGradeSelection(value) {
+            this.heroSearchForm.grades = value
+        },
     }
 }
 </script>
@@ -131,6 +184,27 @@ export default {
 <style scoped lang="less">
 @import '~../less/variables.less';
 .search {
-    background: linear-gradient(black, 1vh, @bgcolor);
+  margin-top: 3vh;
+  background: #252B35;
 }
+
+.input-form {
+  background-color: #222731;
+  color: #f1f1f1;
+  box-shadow: none!important;
+  border: 0;
+}
+
+.grid-side-500 {
+  display: grid;
+  column-gap: 20px;
+  height: 90vh;
+}
+@media (min-width: 500px) {
+    .grid-side-500 {
+        grid-template-columns: 200px auto;
+    }
+}
+
+
 </style>
