@@ -96,13 +96,6 @@ export default {
                     symbol: 'symbol/icon_class_soulweaver.png'
                 }
             ],
-            elementOptions: [
-                { text: 'Fire', value: 'fire', symbol: 'symbol/icon_fire.png' },
-                { text: 'Earth', value: 'earth', symbol: 'symbol/icon_earth.png' },
-                { text: 'Ice', value: 'ice', symbol: 'symbol/icon_ice.png' },
-                { text: 'Light', value: 'light', symbol: 'symbol/icon_light.png' },
-                { text: 'Dark', value: 'dark', symbol: 'symbol/icon_dark.png' }
-            ],
             heroSearchForm: {
                 name: '',
                 elements: [],
