@@ -8,7 +8,9 @@
                     :value="elementOption.value"
                     @change.native="selectElement"
                 >
-                    <img :src="renderSymbol(elementOption.symbol)" :alt="elementOption.text" />
+                    <img
+                    :src="renderSymbol(elementOption.symbol)"
+                    :alt="elementOptions.text" />
                 </b-form-checkbox>
             </b-form-checkbox-group>
         </b-form-group>
@@ -49,6 +51,30 @@ export default {
 
 <style lang="less">
 .search-filter-elements label {
-    // Kuri! Do thing here
+  padding: 5px 8px;
+  user-select: none;
+  min-width: 18px;
+  text-align: center;
+  background: #2a313d;
+  color: #a1aebd;
+  border: 1px solid #222731;
+  border-radius: 3px;
+  box-shadow: none!important;
+  outline: 0;
 }
+
+.search-filter-elements label.hover {
+    background: #252b35;
+}
+
+.search-filter-elements label.active {
+    background: #202225;
+}
+img{
+  height: 18px;
+  width: 18px;
+  vertical-align: sub;
+}
+
+
 </style>

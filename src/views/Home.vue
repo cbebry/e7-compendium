@@ -1,9 +1,12 @@
 <template>
     <div class="home">
+
+        <!-- ### Move background imace sourcing to local files ### -->
+
         <div
             class="bg active"
             style="
-                background-image: url('https://lh6.googleusercontent.com/qVOGaEVgZtFe_Dv-xxq_SrQBHp5UR8j4-NGf_wiDB693TxKpbVHtwLwTSggcpc3TCjpgBDgk8altdthaSCAdNzq-Rk_xP_TJfisjCQvg887Sf-0QV_JBOVLc4cpfdFv-IW7iRmKa');
+                background-image: url('/assets/background.png');
             "
         ></div>
         <div class="justify-content-center">
