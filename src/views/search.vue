@@ -1,5 +1,6 @@
 <template>
   <div class="search">
+    <tag-filter></tag-filter>
     <div class="container grid-side-500">
         <!-- Search Options -->
         <div class="row">
@@ -114,9 +115,13 @@ import SearchFilterGrades from '@/components/search/search-filter-grades'
 import HeroSearchResultsHeader from '@/components/search/hero/hero-search-results-header'
 import HeroSearchResult from '@/components/search/hero/hero-search-result'
 import HeroSearchNoResults from '@/components/search/hero/hero-search-no-results'
+
+import TagFilter from '@/components/search/tag-search'
+
 export default {
     name: 'search',
     components: {
+        TagFilter,
         SearchFilterElements,
         SearchFilterClasses,
         SearchFilterGrades,
