@@ -1,14 +1,8 @@
 <template>
     <div class="home">
-
         <!-- ### Move background imace sourcing to local files ### -->
 
-        <div
-            class="bg active"
-            style="
-                background-image: url('/assets/background.png');
-            "
-        ></div>
+        <div class="bg active" style="background-image: url('/assets/background.png');"></div>
         <div class="justify-content-center">
             <global-search class="search-bar"></global-search>
         </div>

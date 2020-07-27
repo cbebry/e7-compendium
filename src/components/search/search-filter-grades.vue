@@ -1,14 +1,15 @@
 <template>
-    <div grade="search-filter-grades">
-        <b-form-group label="grade(s)">
-            <b-form-checkbox-group buttons v-model="selectedgrade">
+    <div class="search-filter-grades">
+        <b-form-group label="Grade(s)">
+            <b-form-checkbox-group buttons v-model="selectedGrades">
                 <b-form-checkbox
                     v-for="gradeOption in gradeOptions"
                     :key="gradeOption.value"
                     :value="gradeOption.value"
-                    @change.native="selectgrade"
+                    @change.native="selectGrade"
                 >
-                <!-- change display value here -->
+                    <!-- change display value here -->
+                    {{ gradeOption.text }}
                 </b-form-checkbox>
             </b-form-checkbox-group>
         </b-form-group>
@@ -21,7 +22,7 @@ export default {
     props: ['value'],
     data() {
         return {
-            selectedgrade: [],
+            selectedGrades: [],
             gradeOptions: [
                 { text: '1', value: '1' },
                 { text: '2', value: '2' },
@@ -32,13 +33,13 @@ export default {
         }
     },
     methods: {
-        selectgrade() {
-            this.$emit('gradeSelection', this.selectedgrades)
+        selectGrade() {
+            this.$emit('gradeSelection', this.selectedGrades)
         }
     },
     watch: {
         value() {
-            this.selectedgrades = this.value
+            this.selectedGrades = this.value
         }
     }
 }
@@ -46,16 +47,16 @@ export default {
 
 <style lang="less">
 .search-filter-grades label {
-  padding: 5px 8px;
-  user-select: none;
-  min-width: 18px;
-  text-align: center;
-  background: #2a313d;
-  color: #a1aebd;
-  border: 1px solid #222731;
-  border-radius: 3px;
-  box-shadow: none!important;
-  outline: 0;
+    padding: 5px 8px;
+    user-select: none;
+    min-width: 18px;
+    text-align: center;
+    background: #2a313d;
+    color: #a1aebd;
+    border: 1px solid #222731;
+    border-radius: 3px;
+    box-shadow: none !important;
+    outline: 0;
 }
 
 .search-filter-grades label.hover {
@@ -65,5 +66,4 @@ export default {
 .search-filter-grades label.active {
     background: #202225;
 }
-
 </style>
