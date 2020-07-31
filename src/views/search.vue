@@ -1,169 +1,83 @@
 <template>
-    <div class="search">
-      <h1/>
-      <div class="container grid-side-500">
-        <div class="d-flex flex-row bd-highlight mb-3">
-          <tag-filter
-            class="filter"
-            @filterUpdate="onTagKeyUp"
-            v-model="heroSearchForm.tags"
-          ></tag-filter>
-        </div>
+  <div class="search">
+    <h1/>
+    <div class="container grid-side-500">
+      <div class="d-flex flex-row bd-highlight mb-3">
+        <tag-filter
+          class="filter"
+          @filterUpdate="onTagKeyUp"
+          v-model="heroSearchForm.tags"
+        ></tag-filter>
       </div>
-
-      <div class="container grid-side-500">
-        <b-row class="justify-content-md-center">
-          <b-col col lg="2">
-            <b-dropdown text="Element" @click.stop="">
-                <b-form-checkbox-group
-                  v-model="selected"
-                  :options="options"
-                  switches
-                  stacked
-                ></b-form-checkbox-group>
-            </b-dropdown>
-          </b-col>
-          <b-col cols="12" md="auto">
-            <b-dropdown text="Element" @click.stop="">
-                <b-form-checkbox-group
-                  v-model="selected"
-                  :options="options"
-                  switches
-                  stacked
-                ></b-form-checkbox-group>
-            </b-dropdown>
-          </b-col>
-          <b-col col lg="2">
-            <b-dropdown text="Element" @click.stop="">
-                <b-form-checkbox-group
-                  v-model="selected"
-                  :options="options"
-                  switches
-                  stacked
-                ></b-form-checkbox-group>
-            </b-dropdown>
-          </b-col>
-        </b-row>
-      </div>
-
-
-
-      <div class="container grid-side-500">
-          <!-- Search Options -->
-          <div class="row">
-              <div class="col">
-                  <!-- Get Name -->
-                  <div>
-                      <label for="search-form-name">
-                          Name:
-                          <b-form-input
-                              id="search-form-name"
-                              v-model="heroSearchForm.name"
-                              placeholder="Name"
-                              trim
-                              class="input-form"
-                          ></b-form-input>
-                      </label>
-                  </div>
-
-                  <!-- ### Buttons update upon clicking elsewhere on the page ### -->
-                  <!-- ### Appearence should update on click for clairity ### -->
-
-                  <!-- ### Basic Options ### -->
-
-                  <!-- Get Element Component -->
-                  <div>
-                      <search-filter-elements
-                          @elementSelection="onElementSelection"
-                          v-model="heroSearchForm.elements"
-                      ></search-filter-elements>
-                  </div>
-                  <!-- Get Class Component -->
-                  <div>
-                      <search-filter-classes
-                          @classSelection="onClassSelection"
-                          v-model="heroSearchForm.classes"
-                      ></search-filter-classes>
-                  </div>
-                  <!-- Get Grade Component -->
-                  <!-- ### Number labels need to be fixed ### -->
-                  <div>
-                      <search-filter-grades
-                          @gradeSelection="onGradeSelection"
-                          v-model="heroSearchForm.grades"
-                      ></search-filter-grades>
-                  </div>
-
-                  <!-- Search Results Options-->
-                  <!-- ### Should become redundant as list will update on click ### -->
-                  <div>
-                      <b-button @click="clearSearch()" variant="danger">Clear</b-button>
-                      <b-button @click="search()" variant="primary">Search</b-button>
-                  </div>
-
-                  <!-- ### Advanced Options ### -->
-                  <hr />
-                  --- Test components ---
-                  <hr />
-                  <!-- Get Zodiac Component -->
-
-                  <!-- ### Trying to see what is best for visual clarity and ease of access ### -->
-                  <!-- Get Imprint Component -->
-                  <!--                    <div>-->
-                  <!--                        <b-form-group id="input-group-3" label="Imprint:" label-for="input-3">-->
-                  <!--                            <b-form-select-->
-                  <!--                                id="input-3"-->
-                  <!--                                class="input-form"-->
-                  <!--                                v-model="heroSearchForm.imprint"-->
-                  <!--                                :options="imprints"-->
-                  <!--                                required-->
-                  <!--                                multiple-->
-                  <!--                            ></b-form-select>-->
-                  <!--                        </b-form-group>-->
-                  <!--                    </div>-->
-                  <!--                    &lt;!&ndash; Get Imprint-Focus Component &ndash;&gt;-->
-                  <!--                    <div>-->
-                  <!--                        <b-form-checkbox v-model="checked" name="check-button" switch>-->
-                  <!--                            Attack-->
-                  <!--                        </b-form-checkbox>-->
-                  <!--                        <b-form-checkbox v-model="checked" name="check-button" switch>-->
-                  <!--                            Health-->
-                  <!--                        </b-form-checkbox>-->
-                  <!--                        <b-form-checkbox v-model="checked" name="check-button" switch>-->
-                  <!--                            Defense-->
-                  <!--                        </b-form-checkbox>-->
-                  <!--                        <b-form-checkbox v-model="checked" name="check-button" switch>-->
-                  <!--                            Speed-->
-                  <!--                        </b-form-checkbox>-->
-                  <!--                    </div>-->
-
-                  <!-- Get Attribute Component -->
-                  <!-- ### Placeholder for other sorting methods such as sorting by debuff etc. ### -->
-              </div>
-          </div>
-
-          <!-- Search Results -->
-          <div class="hero-search-results">
-              <hero-search-results-header></hero-search-results-header>
-              <hero-search-result
-                  v-for="heroSearchResult in heroSearchResults"
-                  :key="heroSearchResult.ID"
-                  :hero="heroSearchResult"
-              ></hero-search-result>
-              <hero-search-no-results
-                  v-show="heroSearchResults.length === 0"
-              ></hero-search-no-results>
-          </div>
-          <!-- End Search Results -->
-        </div>
     </div>
+
+    <div class="container grid-side-500">
+      <b-row class="justify-content-md-center">
+
+        <b-navbar type="dark" variant="dark" class="dropdownBar">
+            <b-navbar-nav align="center" small justify class="dropdownItems">
+              <b-nav-text><b>Sort:</b></b-nav-text>
+              <b-nav-item>Name</b-nav-item>
+
+              <b-nav-item-dropdown text="Element" @click.stop="">
+                <b-form-checkbox-group
+                  v-model="selected"
+                  :options="elementOptions"
+                  switches
+                  stacked
+                  class="switchbox"
+                ></b-form-checkbox-group>
+              </b-nav-item-dropdown>
+
+              <b-nav-item-dropdown text="Class" @click.stop="">
+                <b-form-checkbox-group
+                  v-model="selected"
+                  :options="classOptions"
+                  switches
+                  stacked
+                  class="switchbox"
+                ></b-form-checkbox-group>
+              </b-nav-item-dropdown>
+
+              <b-nav-item-dropdown text="Grade" @click.stop="">
+                <b-form-checkbox-group
+                  v-model="selected"
+                  :options="gradeOptions"
+                  switches
+                  stacked
+                  class="switchbox"
+                ></b-form-checkbox-group>
+              </b-nav-item-dropdown>
+
+              <b-nav-item>Attack</b-nav-item>
+              <b-nav-item>Health</b-nav-item>
+              <b-nav-item>Defense</b-nav-item>
+              <b-nav-item>Speed</b-nav-item>
+            </b-navbar-nav>
+          </b-navbar>
+
+      </b-row>
+      <div class="hero-search-results">
+          <hero-search-results-header></hero-search-results-header>
+          <hero-search-result
+              v-for="heroSearchResult in heroSearchResults"
+              :key="heroSearchResult.ID"
+              :hero="heroSearchResult"
+          ></hero-search-result>
+          <hero-search-no-results
+              v-show="heroSearchResults.length === 0"
+          ></hero-search-no-results>
+      </div>
+    </div>
+
+    <!-- Search Results -->
+
+    <!-- End Search Results -->
+  </div>
 </template>
 
 <script>
 import heroSearchService from '@/services/hero-search.service'
-import SearchFilterElements from '@/components/search/search-filter-elements'
-import SearchFilterClasses from '@/components/search/search-filter-classes'
-import SearchFilterGrades from '@/components/search/search-filter-grades'
 
 import HeroSearchResultsHeader from '@/components/search/hero/hero-search-results-header'
 import HeroSearchResult from '@/components/search/hero/hero-search-result'
@@ -175,9 +89,6 @@ export default {
     name: 'search',
     components: {
         TagFilter,
-        SearchFilterElements,
-        SearchFilterClasses,
-        SearchFilterGrades,
         HeroSearchResultsHeader,
         HeroSearchResult,
         HeroSearchNoResults
@@ -209,14 +120,32 @@ export default {
             ],
 
             heroSearchResults: [],
-
-
             selected: [], // Must be an array reference!
-            options: [
-              { text: 'Red', value: 'red' },
-              { text: 'Green', value: 'green' },
-              { text: 'Yellow', value: 'yellow' },
-              { text: 'Blue', value: 'blue' }
+            gradeOptions: [
+                { text: '1', value: '1' },
+                { text: '2', value: '2' },
+                { text: '3', value: '3' },
+                { text: '4', value: '4' },
+                { text: '5', value: '5' }
+            ],
+            elementOptions: [
+                { text: 'Fire', value: 'fire', symbol: 'symbol/icon_fire.png' },
+                { text: 'Earth', value: 'earth', symbol: 'symbol/icon_earth.png' },
+                { text: 'Ice', value: 'ice', symbol: 'symbol/icon_ice.png' },
+                { text: 'Light', value: 'light', symbol: 'symbol/icon_light.png' },
+                { text: 'Dark', value: 'dark', symbol: 'symbol/icon_dark.png' }
+            ],
+            classOptions: [
+                { text: 'Knight', value: 'knight', symbol: 'symbol/icon_class_knight.png' },
+                { text: 'Warrior', value: 'warrior', symbol: 'symbol/icon_class_warrior.png' },
+                { text: 'Ranger', value: 'ranger', symbol: 'symbol/icon_class_ranger.png' },
+                { text: 'Thief', value: 'thief', symbol: 'symbol/icon_class_thief.png' },
+                { text: 'Mage', value: 'mage', symbol: 'symbol/icon_class_mage.png' },
+                {
+                    text: 'Soul Weaver',
+                    value: 'soulweaver',
+                    symbol: 'symbol/icon_class_soulweaver.png'
+                }
             ],
 
         }
@@ -237,19 +166,11 @@ export default {
         renderSymbol(symbol) {
             return require(`@/assets/${symbol}`)
         },
-        onElementSelection(value) {
-            this.heroSearchForm.elements = value
-        },
-        onClassSelection(value) {
-            this.heroSearchForm.classes = value
-        },
-        onGradeSelection(value) {
-            this.heroSearchForm.grades = value
-        },
         onTagKeyUp(value) {
             this.heroSearchForm.name = value[0];
             console.log(value[0]);
             value.shift();
+            this.tags = value;
             console.log(value);
         },
     }
@@ -263,6 +184,7 @@ export default {
     background: #252b35;
 }
 .filter {
+  margin-top: 3vh;
   display: block;
   text-align: left;
 }
@@ -271,6 +193,21 @@ export default {
     color: #f1f1f1;
     box-shadow: none !important;
     border: 0;
+}
+.dropdownBar {
+  border: 1px solid #222731;
+  border-radius: 3px;
+  box-shadow: none !important;
+  outline: 0;
+  height: 3.5vh;
+
+}
+.dropdownItems {
+
+}
+.switchbox {
+    color: #f1f1f1;
+    padding-left: 10px;
 }
 
 </style>

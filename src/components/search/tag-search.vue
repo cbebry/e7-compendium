@@ -1,5 +1,7 @@
 <template>
   <div class="tagsearch">
+    <!-- Issue where pressing enter allows user to input tags in order
+         Issue is corelated to ":add-only-from-autocomplete="true" set to false for testing -->
     <vue-tags-input
       v-model="tag"
       :tags="tags"
@@ -7,7 +9,9 @@
       :add-only-from-autocomplete="true"
       :autocomplete-filter-duplicates="true"
       :autocomplete-min-length=2
+      @tags-changed="update"
       @input.native="filterUpdate"
+      @keyup.native.enter="filterUpdate"
     />
   </div>
 </template>
@@ -26,14 +30,17 @@ export default {
       autocompleteItems: [
         // Elements
         { text: 'Fire',}, { text: 'Ice',}, { text: 'Earth',}, { text: 'Light',}, { text: 'Dark',},
-        { text: 'Defense Break',},
+        { text: 'Defense Break',}, { text: 'Attack Up',},
       ],
       debounce: null,
     };
   },
   methods: {
+    update(newTags) {
+      this.tags = newTags;
+    },
     filterUpdate() {
-      var tempTags = this.tags;
+      var tempTags = JSON.parse(JSON.stringify(this.tags));
       tempTags.unshift(this.tag);
       this.$emit('filterUpdate', tempTags);
     }
