@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default {
     search({ name, elements, classes, grades }) {
-        return axios.get('/base.json').then((response) => {
+        return axios.get('/hero-data.json').then((response) => {
             console.log(`loaded ${response.data.length} entries from base.json`)
             const filteredData = response.data.filter((entry) => {
                 const queryMatchesName = entry.Name.toLowerCase().indexOf(name.toLowerCase()) > -1
