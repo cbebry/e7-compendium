@@ -1,5 +1,5 @@
 <template>
-    <b-navbar id="nav" toggleable="lg" type="dark" variant="dark">
+    <b-navbar id="nav" toggleable="lg" type="dark" variant="dark" :sticky="true">
         <div class="container">
             <b-navbar-brand>
                 <router-link to="/" role="link">E7 Compendium</router-link>
