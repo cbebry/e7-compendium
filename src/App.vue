@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <navigation></navigation>
-        <router-view />
+        <router-view/>
         <the-footer></the-footer>
     </div>
 </template>
@@ -28,6 +28,8 @@ export default {
     color: #b0bbc8;
 }
 body {
+    overflow: hidden;
     background-color: #252b35;
 }
+
 </style>
