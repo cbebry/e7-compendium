@@ -7,6 +7,12 @@ const state = {
 const getters = {
     search: (state) => (heroSearchForm) => {
         return heroSearchService.search(state.heroData, heroSearchForm)
+    },
+    getHeroProfile: (state) => (heroId) => {
+        const heroProfileFilter = state.heroData.filter(({ ID }) => {
+            return ID === heroId
+        })
+        return heroProfileFilter.length ? heroProfileFilter[0] : {}
     }
 }
 

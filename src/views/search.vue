@@ -146,139 +146,8 @@
                 </b-container>
             </b-col>
             <!-- Detailed section -->
-            <!-- # Issue # -->
-            <!-- Separate this into a separate component, let the loadDetailed function send a string to the component
-             which allows it to load the correct hero information -->
-            <b-col id="detailed-content" class="sidebar">
-                <!-- # Issue # -->
-                <!-- How to load data from json into these HTML elements -->
-                <b-container fluid class="detailed-content">
-                    <h1>Detail</h1>
-                    <div class="container grid-side-500">
-                        <b-row>
-                            <b-col>
-                                <h1>HERO_IMG</h1>
-                            </b-col>
-                            <b-col>
-                                <b-row>
-                                    <b-col><p>Element_IMG</p></b-col>
-                                    <b-col><p>Element_title</p></b-col>
-                                    <b-col><p>Grade_IMG</p></b-col>
-                                    <b-col><p>Grade_title</p></b-col>
-                                </b-row>
-                                <b-row>
-                                    <b-col><p>Class_IMG</p></b-col>
-                                    <b-col><p>Class_title</p></b-col>
-                                    <b-col><p>Zodiac_IMG</p></b-col>
-                                    <b-col><p>Zodiac_title</p></b-col>
-                                </b-row>
-                                <b-row>
-                                    <b-col><p>Attack</p></b-col>
-                                    <b-col>
-                                        <b-progress :value="tempVal" class="w-50 mb-2"></b-progress>
-                                    </b-col>
-                                </b-row>
-                                <b-row>
-                                    <b-col><p>Health</p></b-col>
-                                    <b-col>
-                                        <b-progress :value="tempVal" class="w-50 mb-2"></b-progress>
-                                    </b-col>
-                                </b-row>
-                                <b-row>
-                                    <b-col><p>Defense</p></b-col>
-                                    <b-col>
-                                        <b-progress :value="tempVal" class="w-50 mb-2"></b-progress>
-                                    </b-col>
-                                </b-row>
-                                <b-row>
-                                    <b-col><p>Speed</p></b-col>
-                                    <b-col>
-                                        <b-progress :value="tempVal" class="w-50 mb-2"></b-progress>
-                                    </b-col>
-                                </b-row>
-                                <b-row>
-                                    <b-col>
-                                        <b-row>
-                                            <b-col><p>Crit%</p></b-col>
-                                        </b-row>
-                                        <b-row>
-                                            <b-col><p>CritDmg</p></b-col>
-                                        </b-row>
-                                    </b-col>
-                                    <b-col>
-                                        <b-row>
-                                            <b-col><p>Eff</p></b-col>
-                                        </b-row>
-                                        <b-row>
-                                            <b-col><p>EffResist</p></b-col>
-                                        </b-row>
-                                    </b-col>
-                                </b-row>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-                                <b-row><p>Hero Description</p></b-row>
-                                <b-row>
-                                    <b-col>
-                                        SPECIALTY_IMG
-                                    </b-col>
-                                    <b-col>
-                                        Specialty description
-                                    </b-col>
-                                </b-row>
-                            </b-col>
-                            <b-col>
-                                <p>Imprint info</p>
-                            </b-col>
-                            <b-col>
-                                <p>Imprint focus info</p>
-                            </b-col>
-                        </b-row>
-
-                        <b-row>
-                            <b-col>
-                                <b-card
-                                    title="Card Title"
-                                    tag="article"
-                                    style="width: 15vw;"
-                                    class="mb-2"
-                                >
-                                    <b-card-text>
-                                        Some quick example text to build on the card title and make
-                                        up the bulk of the card's content.
-                                    </b-card-text>
-                                </b-card>
-                            </b-col>
-                            <b-col>
-                                <b-card
-                                    title="Card Title"
-                                    tag="article"
-                                    style="width: 15vw;"
-                                    class="mb-2"
-                                >
-                                    <b-card-text>
-                                        Some quick example text to build on the card title and make
-                                        up the bulk of the card's content.
-                                    </b-card-text>
-                                </b-card>
-                            </b-col>
-                            <b-col>
-                                <b-card
-                                    title="Card Title"
-                                    tag="article"
-                                    style="width: 15vw;"
-                                    class="mb-2"
-                                >
-                                    <b-card-text>
-                                        Some quick example text to build on the card title and make
-                                        up the bulk of the card's content.
-                                    </b-card-text>
-                                </b-card>
-                            </b-col>
-                        </b-row>
-                    </div>
-                </b-container>
+            <b-col class="sidebar" :class="sidebarStatus">
+                <hero-profile :hero-id="selectedHeroId"></hero-profile>
             </b-col>
         </b-row>
     </div>
@@ -287,12 +156,15 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
+import HeroProfile from '@/components/search/hero/hero-profile'
+
 export default {
     name: 'search',
-    components: {},
+    components: { HeroProfile },
     data() {
         return {
             sidebarOpen: false,
+            selectedHeroId: null,
             heroSearchForm: {
                 name: '',
                 elements: [],
@@ -300,11 +172,8 @@ export default {
                 grades: [],
                 imprint: ''
             },
-            /* Array of tags
-               Keeps track of active tags
-               Strings added to this array will display as an active tag
-               # Need to find a way to organize Tags added [ie. 'Fire' should be able to be recognized as an element tag]
-               # Maybe use keys??? */
+            /* Array of tags - Keeps track of active tags
+               Objects added to this array will display as an active tag */
             tags: [],
             /* Table columns
                In order to add columns they must have the corresponding key stored here
@@ -484,23 +353,17 @@ export default {
         loadDetailed(e) {
             // prints out row's character ID
             console.log(e.ID)
+            this.selectedHeroId = e.ID
             // Runs sidebarToggle function to adjust for detailed view
             this.sidebarToggle()
         },
-        // Changes the margin of the main content to make room for side drawer content
+        /**
+         * Changes the margin of the main content to make room for the side drawer content.
+         */
         sidebarToggle() {
-            // Returns to normal position
-            // TODO instead of using document object to change styles, use vue with dynamic classes.
-            if (this.sidebarOpen == false) {
-                document.getElementById('detailed-content').style.transitionDuration = '0.35s'
-                document.getElementById('detailed-content').style.marginRight = '0vw'
-                this.sidebarOpen = true
-            }
-            // Moves Left
-            else {
-                document.getElementById('detailed-content').style.transitionDuration = '0.35s'
-                document.getElementById('detailed-content').style.marginRight = '-102vw'
-                this.sidebarOpen = false
+            this.sidebarOpen = !this.sidebarOpen
+            if (!this.sidebarOpen) {
+                this.selectedHeroId = null
             }
         },
         getAttack(data) {
@@ -809,6 +672,12 @@ export default {
         ...mapGetters('hero', ['search']),
         heroSearchResults() {
             return this.search(this.heroSearchForm)
+        },
+        sidebarStatus() {
+            return {
+                'sidebar-open': this.sidebarOpen,
+                'sidebar-closed': !this.sidebarOpen
+            }
         }
     }
 }
@@ -830,6 +699,14 @@ export default {
 .detailed-content {
     overflow-y: scroll;
     height: 93vh;
+}
+.sidebar-open {
+    transition-duration: 0.35s;
+    margin-right: 0vw;
+}
+.sidebar-closed {
+    transition-duration: 0.35s;
+    margin-right: -102vw;
 }
 /* Tag searching form input */
 .input-form {
