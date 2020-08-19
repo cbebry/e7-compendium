@@ -1,270 +1,291 @@
 <template>
     <div class="search">
-      <b-row>
-        <!-- Main search column -->
-        <b-col id="search-content">
-          <b-container fluid class="search-content">
-            <h1>Search</h1>
-            <div class="container grid-side-500">
-                  <div class="d-flex justify-content-center">
-                      <div>
-                          <b-input-group class="search-form">
-                              <b-form-input
-                                  v-model="text"
-                                  @keyup.enter="enterTag"
-                                  @keyup.backspace="backspaceTag"
-                                  placeholder="Search term"
-                                  class="search-form"
-                              ></b-form-input>
-                          </b-input-group>
-                      </div>
-                  </div>
-                  <div role="group" class="search-tags-container" id="search-tags-container">
-                      <output
-                          role="status"
-                          aria-live="polite"
-                          aria-atomic="true"
-                          aria-relevant="additions text"
-                          class="sr-only"
-                      >
-                          {{ tagsSrOutput(tags) }}
-                      </output>
-                      <div role="status" aria-live="polite" aria-atomic="true" class="sr-only">
-                          {{ tagRemoved }}
-                      </div>
-                      <div v-for="(tag, i) in tags" :key="tag.value" class="d-inline-block">
-                          <img class="img-responsive" v-if="tag.symbol" :src="tagSymbol(tag)" aria-hidden="true" />
-                          {{ tag.text }}
-                          <button
-                              aria-keyshortcuts="Delete"
-                              type="button"
-                              aria-label="Delete tag"
-                              class="close b-form-tag-remove ml-1"
-                              @click="tagDeleteButton(i)"
-                          >
-                              ×
-                          </button>
-                      </div>
-                  </div>
-                  <!-- Nav bar section -->
-                  <b-row class="justify-content-md-center">
-                      <!-- Nav bar for future table sorting and column identification -->
-                      <b-navbar type="dark" variant="dark" class="dropdownBar">
-                          <b-navbar-nav align="center" small justify class="dropdownItems">
-                              <b-nav-text><b>Sort:</b></b-nav-text>
-                              <b-nav-item></b-nav-item>
-                              <b-nav-item>Name</b-nav-item>
+        <b-row>
+            <!-- Main search column -->
+            <b-col id="search-content">
+                <b-container fluid class="search-content">
+                    <h1>Search</h1>
+                    <div class="container grid-side-500">
+                        <div class="d-flex justify-content-center">
+                            <div>
+                                <b-input-group class="search-form">
+                                    <b-form-input
+                                        v-model="heroSearchForm.name"
+                                        @keyup.enter="enterTag"
+                                        @keyup.backspace="backspaceTag"
+                                        placeholder="Search term"
+                                        class="search-form"
+                                    ></b-form-input>
+                                </b-input-group>
+                            </div>
+                        </div>
+                        <div role="group" class="search-tags-container" id="search-tags-container">
+                            <output
+                                role="status"
+                                aria-live="polite"
+                                aria-atomic="true"
+                                aria-relevant="additions text"
+                                class="sr-only"
+                            >
+                                {{ tagsSrOutput(tags) }}
+                            </output>
+                            <div
+                                role="status"
+                                aria-live="polite"
+                                aria-atomic="true"
+                                class="sr-only"
+                            >
+                                {{ tagRemoved }}
+                            </div>
+                            <div v-for="(tag, i) in tags" :key="tag.value" class="d-inline-block">
+                                <img
+                                    class="img-responsive"
+                                    v-if="tag.symbol"
+                                    :src="tagSymbol(tag)"
+                                    aria-hidden="true"
+                                />
+                                {{ tag.text }}
+                                <button
+                                    aria-keyshortcuts="Delete"
+                                    type="button"
+                                    aria-label="Delete tag"
+                                    class="close b-form-tag-remove ml-1"
+                                    @click="tagDeleteButton(i)"
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Nav bar section -->
+                        <b-row class="justify-content-md-center">
+                            <!-- Nav bar for future table sorting and column identification -->
+                            <b-navbar type="dark" variant="dark" class="dropdownBar">
+                                <b-navbar-nav align="center" small justify class="dropdownItems">
+                                    <b-nav-text><b>Sort:</b></b-nav-text>
+                                    <b-nav-item></b-nav-item>
+                                    <b-nav-item>Name</b-nav-item>
 
-                              <b-nav-item-dropdown text="Element" @click.stop="">
-                                  <b-form-checkbox-group
-                                      v-model="heroSearchForm.elements"
-                                      :options="elementOptions"
-                                      switches
-                                      stacked
-                                      class="switchbox"
-                                      @change.native="elementDropdownChanged"
-                                  ></b-form-checkbox-group>
-                              </b-nav-item-dropdown>
+                                    <b-nav-item-dropdown text="Element" @click.stop="">
+                                        <b-form-checkbox-group
+                                            v-model="heroSearchForm.elements"
+                                            :options="elementOptions"
+                                            switches
+                                            stacked
+                                            class="switchbox"
+                                            @change.native="elementDropdownChanged"
+                                        ></b-form-checkbox-group>
+                                    </b-nav-item-dropdown>
 
-                              <b-nav-item-dropdown text="Class" @click.stop="">
-                                  <b-form-checkbox-group
-                                      v-model="heroSearchForm.classes"
-                                      :options="classOptions"
-                                      switches
-                                      stacked
-                                      class="switchbox"
-                                      @change.native="classDropdownChanged"
-                                  ></b-form-checkbox-group>
-                              </b-nav-item-dropdown>
+                                    <b-nav-item-dropdown text="Class" @click.stop="">
+                                        <b-form-checkbox-group
+                                            v-model="heroSearchForm.classes"
+                                            :options="classOptions"
+                                            switches
+                                            stacked
+                                            class="switchbox"
+                                            @change.native="classDropdownChanged"
+                                        ></b-form-checkbox-group>
+                                    </b-nav-item-dropdown>
 
-                              <b-nav-item-dropdown text="Grade" @click.stop="">
-                                  <b-form-checkbox-group
-                                      v-model="heroSearchForm.grades"
-                                      :options="gradeOptions"
-                                      switches
-                                      stacked
-                                      class="switchbox"
-                                      @change.native="gradeDropdownChanged"
-                                  ></b-form-checkbox-group>
-                              </b-nav-item-dropdown>
-                              <b-nav-item>Atk</b-nav-item>
-                              <b-nav-item>HP</b-nav-item>
-                              <b-nav-item>Def</b-nav-item>
-                              <b-nav-item>Spd</b-nav-item>
-                          </b-navbar-nav>
-                      </b-navbar>
-                      <!-- Nav bar END -->
-                  </b-row>
-                  <h1 />
-                  <!-- Table section -->
-                  <b-row class="justify-content-md-center">
-                      <div>
-                          <!-- B-table allows us to actively sort items and select items in the table -->
-                          <b-table
-                              small
-                              :items="heroSearchResults"
-                              :fields="fields"
-                              responsive="sm"
-                              class="table"
-                              selectable
-                              select-mode="single"
-                              borderless
-                              thead-class="hidden_header"
-                              @row-clicked="loadDetailed"
-                          >
-                              <!-- loadDetailed function call when a row is clicked -->
-                              <!-- Template to reformat links for hero portraits -->
-                              <template v-slot:cell(Face_URL)="data">
-                                  <img :src="data.value" />
-                              </template>
-                              <template v-slot:cell(Bra)="data">
-                                  <p>{{ getAttack(data.item) }}</p>
-                              </template>
-                              <template v-slot:cell(Int)="data">
-                                  <p>{{ getHealth(data.item) }}</p>
-                              </template>
-                              <template v-slot:cell(Fai)="data">
-                                  <p>{{ getDefense(data.item) }}</p>
-                              </template>
-                              <template v-slot:cell(Des)="data">
-                                  <p>{{ getSpeed(data.item) }}</p>
-                              </template>
-                          </b-table>
-                      </div>
-                  </b-row>
-              </div>
-          </b-container>
-        </b-col>
-        <!-- Detailed section -->
-        <!-- # Issue # -->
-        <!-- Seperate this into a seperate component, let the loadDetailed function send a string to the component
+                                    <b-nav-item-dropdown text="Grade" @click.stop="">
+                                        <b-form-checkbox-group
+                                            v-model="heroSearchForm.grades"
+                                            :options="gradeOptions"
+                                            switches
+                                            stacked
+                                            class="switchbox"
+                                            @change.native="gradeDropdownChanged"
+                                        ></b-form-checkbox-group>
+                                    </b-nav-item-dropdown>
+                                    <b-nav-item>Atk</b-nav-item>
+                                    <b-nav-item>HP</b-nav-item>
+                                    <b-nav-item>Def</b-nav-item>
+                                    <b-nav-item>Spd</b-nav-item>
+                                </b-navbar-nav>
+                            </b-navbar>
+                            <!-- Nav bar END -->
+                        </b-row>
+                        <h1 />
+                        <!-- Table section -->
+                        <b-row class="justify-content-md-center">
+                            <div>
+                                <!-- B-table allows us to actively sort items and select items in the table -->
+                                <b-table
+                                    small
+                                    :items="heroSearchResults"
+                                    :fields="fields"
+                                    responsive="sm"
+                                    class="table"
+                                    selectable
+                                    select-mode="single"
+                                    borderless
+                                    thead-class="hidden_header"
+                                    @row-clicked="loadDetailed"
+                                >
+                                    <!-- loadDetailed function call when a row is clicked -->
+                                    <!-- Template to reformat links for hero portraits -->
+                                    <template v-slot:cell(Face_URL)="data">
+                                        <img :src="data.value" />
+                                    </template>
+                                    <template v-slot:cell(Bra)="data">
+                                        <p>{{ getAttack(data.item) }}</p>
+                                    </template>
+                                    <template v-slot:cell(Int)="data">
+                                        <p>{{ getHealth(data.item) }}</p>
+                                    </template>
+                                    <template v-slot:cell(Fai)="data">
+                                        <p>{{ getDefense(data.item) }}</p>
+                                    </template>
+                                    <template v-slot:cell(Des)="data">
+                                        <p>{{ getSpeed(data.item) }}</p>
+                                    </template>
+                                </b-table>
+                            </div>
+                        </b-row>
+                    </div>
+                </b-container>
+            </b-col>
+            <!-- Detailed section -->
+            <!-- # Issue # -->
+            <!-- Separate this into a separate component, let the loadDetailed function send a string to the component
              which allows it to load the correct hero information -->
-        <b-col id="detailed-content" class="sidebar">
-          <!-- # Issue # -->
-          <!-- How to load data from json into these HTML elements -->
-          <b-container fluid class="detailed-content">
-            <h1>Detail</h1>
-            <div class="container grid-side-500">
-              <b-row>
-                <b-col>
-                  <h1>HERO_IMG</h1>
-                </b-col>
-                <b-col>
-                  <b-row>
-                    <b-col><p>Element_IMG</p></b-col>
-                    <b-col><p>Element_title</p></b-col>
-                    <b-col><p>Grade_IMG</p></b-col>
-                    <b-col><p>Grade_title</p></b-col>
-                  </b-row>
-                  <b-row>
-                    <b-col><p>Class_IMG</p></b-col>
-                    <b-col><p>Class_title</p></b-col>
-                    <b-col><p>Zodiac_IMG</p></b-col>
-                    <b-col><p>Zodiac_title</p></b-col>
-                  </b-row>
-                  <b-row>
-                    <b-col><p>Attack</p></b-col>
-                    <b-col><b-progress :value="tempVal" class="w-50 mb-2"></b-progress></b-col>
-                  </b-row>
-                  <b-row>
-                    <b-col><p>Health</p></b-col>
-                    <b-col><b-progress :value="tempVal" class="w-50 mb-2"></b-progress></b-col>
-                  </b-row>
-                  <b-row>
-                    <b-col><p>Defense</p></b-col>
-                    <b-col><b-progress :value="tempVal" class="w-50 mb-2"></b-progress></b-col>
-                  </b-row>
-                  <b-row>
-                    <b-col><p>Speed</p></b-col>
-                    <b-col><b-progress :value="tempVal" class="w-50 mb-2"></b-progress></b-col>
-                  </b-row>
-                  <b-row>
-                    <b-col>
-                      <b-row>
-                        <b-col><p>Crit%</p></b-col>
-                      </b-row>
-                      <b-row>
-                        <b-col><p>CritDmg</p></b-col>
-                      </b-row>
-                    </b-col>
-                    <b-col>
-                      <b-row>
-                        <b-col><p>Eff</p></b-col>
-                      </b-row>
-                      <b-row>
-                        <b-col><p>EffResist</p></b-col>
-                      </b-row>
-                    </b-col>
-                  </b-row>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col>
-                  <b-row><p>Hero Description</p></b-row>
-                  <b-row>
-                    <b-col>
-                      SPECIALTY_IMG
-                    </b-col>
-                    <b-col>
-                      Specialty description
-                    </b-col>
-                  </b-row>
-                </b-col>
-                <b-col>
-                  <p>Imprint info</p>
-                </b-col>
-                <b-col>
-                  <p>Imprint focus info</p>
-                </b-col>
-              </b-row>
+            <b-col id="detailed-content" class="sidebar">
+                <!-- # Issue # -->
+                <!-- How to load data from json into these HTML elements -->
+                <b-container fluid class="detailed-content">
+                    <h1>Detail</h1>
+                    <div class="container grid-side-500">
+                        <b-row>
+                            <b-col>
+                                <h1>HERO_IMG</h1>
+                            </b-col>
+                            <b-col>
+                                <b-row>
+                                    <b-col><p>Element_IMG</p></b-col>
+                                    <b-col><p>Element_title</p></b-col>
+                                    <b-col><p>Grade_IMG</p></b-col>
+                                    <b-col><p>Grade_title</p></b-col>
+                                </b-row>
+                                <b-row>
+                                    <b-col><p>Class_IMG</p></b-col>
+                                    <b-col><p>Class_title</p></b-col>
+                                    <b-col><p>Zodiac_IMG</p></b-col>
+                                    <b-col><p>Zodiac_title</p></b-col>
+                                </b-row>
+                                <b-row>
+                                    <b-col><p>Attack</p></b-col>
+                                    <b-col>
+                                        <b-progress :value="tempVal" class="w-50 mb-2"></b-progress>
+                                    </b-col>
+                                </b-row>
+                                <b-row>
+                                    <b-col><p>Health</p></b-col>
+                                    <b-col>
+                                        <b-progress :value="tempVal" class="w-50 mb-2"></b-progress>
+                                    </b-col>
+                                </b-row>
+                                <b-row>
+                                    <b-col><p>Defense</p></b-col>
+                                    <b-col>
+                                        <b-progress :value="tempVal" class="w-50 mb-2"></b-progress>
+                                    </b-col>
+                                </b-row>
+                                <b-row>
+                                    <b-col><p>Speed</p></b-col>
+                                    <b-col>
+                                        <b-progress :value="tempVal" class="w-50 mb-2"></b-progress>
+                                    </b-col>
+                                </b-row>
+                                <b-row>
+                                    <b-col>
+                                        <b-row>
+                                            <b-col><p>Crit%</p></b-col>
+                                        </b-row>
+                                        <b-row>
+                                            <b-col><p>CritDmg</p></b-col>
+                                        </b-row>
+                                    </b-col>
+                                    <b-col>
+                                        <b-row>
+                                            <b-col><p>Eff</p></b-col>
+                                        </b-row>
+                                        <b-row>
+                                            <b-col><p>EffResist</p></b-col>
+                                        </b-row>
+                                    </b-col>
+                                </b-row>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <b-row><p>Hero Description</p></b-row>
+                                <b-row>
+                                    <b-col>
+                                        SPECIALTY_IMG
+                                    </b-col>
+                                    <b-col>
+                                        Specialty description
+                                    </b-col>
+                                </b-row>
+                            </b-col>
+                            <b-col>
+                                <p>Imprint info</p>
+                            </b-col>
+                            <b-col>
+                                <p>Imprint focus info</p>
+                            </b-col>
+                        </b-row>
 
-              <b-row>
-                <b-col>
-                  <b-card
-                    title="Card Title"
-                    tag="article"
-                    style="width: 15vw;"
-                    class="mb-2"
-                  >
-                    <b-card-text>
-                      Some quick example text to build on the card title and make up the bulk of the card's content.
-                    </b-card-text>
-                  </b-card>
-                </b-col>
-                <b-col>
-                  <b-card
-                    title="Card Title"
-                    tag="article"
-                    style="width: 15vw;"
-                    class="mb-2"
-                  >
-                    <b-card-text>
-                      Some quick example text to build on the card title and make up the bulk of the card's content.
-                    </b-card-text>
-                  </b-card>
-                </b-col>
-                <b-col>
-                  <b-card
-                    title="Card Title"
-                    tag="article"
-                    style="width: 15vw;"
-                    class="mb-2"
-                  >
-                    <b-card-text>
-                      Some quick example text to build on the card title and make up the bulk of the card's content.
-                    </b-card-text>
-                  </b-card>
-                </b-col>
-              </b-row>
-            </div>
-          </b-container>
-        </b-col>
-      </b-row>
+                        <b-row>
+                            <b-col>
+                                <b-card
+                                    title="Card Title"
+                                    tag="article"
+                                    style="width: 15vw;"
+                                    class="mb-2"
+                                >
+                                    <b-card-text>
+                                        Some quick example text to build on the card title and make
+                                        up the bulk of the card's content.
+                                    </b-card-text>
+                                </b-card>
+                            </b-col>
+                            <b-col>
+                                <b-card
+                                    title="Card Title"
+                                    tag="article"
+                                    style="width: 15vw;"
+                                    class="mb-2"
+                                >
+                                    <b-card-text>
+                                        Some quick example text to build on the card title and make
+                                        up the bulk of the card's content.
+                                    </b-card-text>
+                                </b-card>
+                            </b-col>
+                            <b-col>
+                                <b-card
+                                    title="Card Title"
+                                    tag="article"
+                                    style="width: 15vw;"
+                                    class="mb-2"
+                                >
+                                    <b-card-text>
+                                        Some quick example text to build on the card title and make
+                                        up the bulk of the card's content.
+                                    </b-card-text>
+                                </b-card>
+                            </b-col>
+                        </b-row>
+                    </div>
+                </b-container>
+            </b-col>
+        </b-row>
     </div>
 </template>
 
 <script>
-import heroSearchService from '@/services/hero-search.service'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
     name: 'search',
@@ -272,7 +293,7 @@ export default {
     data() {
         return {
             sidebarOpen: false,
-            heroSearchResults: [],
+            // heroSearchResults: [],
             heroSearchForm: {
                 name: '',
                 elements: [],
@@ -280,9 +301,6 @@ export default {
                 grades: [],
                 imprint: ''
             },
-            /* Form input text
-               Should use this to actively sort by name or any other non-tag attribute */
-            text: '',
             /* Array of tags
                Keeps track of active tags
                Strings added to this array will display as an active tag
@@ -303,7 +321,7 @@ export default {
                 { key: 'Bra', tdClass: 'tableColumn' },
                 { key: 'Int', tdClass: 'tableColumn' },
                 { key: 'Fai', tdClass: 'tableColumn' },
-                { key: 'Des', tdClass: 'tableColumn' },
+                { key: 'Des', tdClass: 'tableColumn' }
             ],
             // Allowed dictionary of tag keywords
             tagRemoved: '',
@@ -360,9 +378,10 @@ export default {
     },
     created() {
         this.loadTagMap()
-        this.search()
+        this.loadAllHeroData()
     },
     methods: {
+        ...mapActions('hero', ['loadAllHeroData']),
         /**
          * Adds Element, Class, and Grade options to the tag list.
          */
@@ -385,26 +404,14 @@ export default {
                 dictionary[String(entity.value).toLowerCase()] = { ...entity, type }
             }
         },
-        /**
-         * Executes the search request and sets this.heroSearchResults to the results.
-         * @returns {Promise<>}
-         */
-        search() {
-            return heroSearchService.search(this.heroSearchForm).then((results) => {
-                this.heroSearchResults = results
-            })
-        },
         classDropdownChanged(selections) {
             console.log('classDropdownChanged', selections)
-            this.search()
         },
         elementDropdownChanged(selections) {
             console.log('elementDropdownChanged', selections)
-            this.search()
         },
         gradeDropdownChanged(selections) {
             console.log('gradeDropdownChanged', selections)
-            this.search()
         },
         tagsSrOutput(tags) {
             const srOutputValues = tags.map((v) => v.text)
@@ -421,7 +428,7 @@ export default {
         },
         retrieveContextualFormList(type, form) {
             if (type && form) {
-                let contextualFormList = null
+                let contextualFormList = []
                 switch (type.toLowerCase()) {
                     case 'element':
                         contextualFormList = form.elements
@@ -450,18 +457,17 @@ export default {
         },
         enterTag() {
             // Verify if tag is allowed and if so, add it
-            const tag = this.tagMap[String(this.text).toLowerCase()]
+            const tag = this.tagMap[String(this.heroSearchForm.name).toLowerCase()]
             if (tag) {
                 this.addTagToForm(tag, this.heroSearchForm)
                 this.tags.push(tag)
-                this.text = ''
-                this.search()
+                this.heroSearchForm.name = ''
             }
         },
         backspaceTag() {
             // # ISSUE: b-form-input emits function with delay meaning the form is empty by the time this function
             //          reads the form
-            if (this.text.length == 0) {
+            if (this.heroSearchForm.name.length === 0) {
                 // If the input section is empty, remove the last tag in the list
                 const tagBeingRemoved = this.tags.pop()
                 this.deleteTag(tagBeingRemoved)
@@ -474,14 +480,13 @@ export default {
         deleteTag(tag) {
             this.removeTagFromForm(tag, this.heroSearchForm)
             this.tagRemoved = '(Tag removed) ' + tag.text
-            this.search() // Might want to let the parent call this, unsure yet
         },
         /* Function is emitted when a table row is clicked */
         loadDetailed(e) {
             // prints out row's character ID
             console.log(e.ID)
             // Runs sidebarToggle function to adjust for detailed view
-            this.sidebarToggle();
+            this.sidebarToggle()
         },
         // Changes the margin of the main content to make room for side drawer content
         sidebarToggle() {
@@ -490,154 +495,322 @@ export default {
             if (this.sidebarOpen == false) {
                 document.getElementById('detailed-content').style.transitionDuration = '0.35s'
                 document.getElementById('detailed-content').style.marginRight = '0vw'
-                this.sidebarOpen = true;
+                this.sidebarOpen = true
             }
             // Moves Left
             else {
                 document.getElementById('detailed-content').style.transitionDuration = '0.35s'
                 document.getElementById('detailed-content').style.marginRight = '-102vw'
-                this.sidebarOpen = false;
+                this.sidebarOpen = false
             }
         },
         getAttack(data) {
-            var temp = (0.6*data.Bra*11*1.375)+150
-            if(data.Class == 'Knight'){
-              if(data.Zodiac == 'Leo'){ temp = temp * 1.18 }
-              if(data.Zodiac == 'Gemini'){ temp = temp * 1.06 }
-              if(data.Zodiac == 'Scorpio'){ temp = temp * 1.06 }
+            var temp = 0.6 * data.Bra * 11 * 1.375 + 150
+            if (data.Class == 'Knight') {
+                if (data.Zodiac == 'Leo') {
+                    temp = temp * 1.18
+                }
+                if (data.Zodiac == 'Gemini') {
+                    temp = temp * 1.06
+                }
+                if (data.Zodiac == 'Scorpio') {
+                    temp = temp * 1.06
+                }
             }
-            if(data.Class == 'Warrior'){
-              if(data.Zodiac == 'Taurus'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Leo'){ temp = temp * 1.18 }
-              if(data.Zodiac == 'Libra'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Scorpio'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Sagittarius'){ temp = temp * 1.09 }
+            if (data.Class == 'Warrior') {
+                if (data.Zodiac == 'Taurus') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Leo') {
+                    temp = temp * 1.18
+                }
+                if (data.Zodiac == 'Libra') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Scorpio') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Sagittarius') {
+                    temp = temp * 1.09
+                }
             }
-            if(data.Class == 'Ranger'){
-              if(data.Zodiac == 'Gemini'){ temp = temp * 1.15 }
-              if(data.Zodiac == 'Leo'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Virgo'){ temp = temp * 1.18 }
-              if(data.Zodiac == 'Libra'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Scorpio'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Sagittarius'){ temp = temp * 1.06 }
-              if(data.Zodiac == 'Aquarius'){ temp = temp * 1.09 }
+            if (data.Class == 'Ranger') {
+                if (data.Zodiac == 'Gemini') {
+                    temp = temp * 1.15
+                }
+                if (data.Zodiac == 'Leo') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Virgo') {
+                    temp = temp * 1.18
+                }
+                if (data.Zodiac == 'Libra') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Scorpio') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Sagittarius') {
+                    temp = temp * 1.06
+                }
+                if (data.Zodiac == 'Aquarius') {
+                    temp = temp * 1.09
+                }
             }
-            if(data.Class == 'Thief'){
-              if(data.Zodiac == 'Aries'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Taurus'){ temp = temp * 1.18 }
-              if(data.Zodiac == 'Gemini'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Leo'){ temp = temp * 1.18 }
-              if(data.Zodiac == 'Scorpio'){ temp = temp * 1.09 }
+            if (data.Class == 'Thief') {
+                if (data.Zodiac == 'Aries') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Taurus') {
+                    temp = temp * 1.18
+                }
+                if (data.Zodiac == 'Gemini') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Leo') {
+                    temp = temp * 1.18
+                }
+                if (data.Zodiac == 'Scorpio') {
+                    temp = temp * 1.09
+                }
             }
-            if(data.Class == 'Mage'){
-              if(data.Zodiac == 'Aries'){ temp = temp * 1.06 }
-              if(data.Zodiac == 'Gemini'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Cancer'){ temp = temp * 1.18 }
-              if(data.Zodiac == 'Leo'){ temp = temp * 1.15 }
-              if(data.Zodiac == 'Virgo'){ temp = temp * 1.09 }
+            if (data.Class == 'Mage') {
+                if (data.Zodiac == 'Aries') {
+                    temp = temp * 1.06
+                }
+                if (data.Zodiac == 'Gemini') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Cancer') {
+                    temp = temp * 1.18
+                }
+                if (data.Zodiac == 'Leo') {
+                    temp = temp * 1.15
+                }
+                if (data.Zodiac == 'Virgo') {
+                    temp = temp * 1.09
+                }
             }
-            if(data.Class == 'Soul Weaver'){
-              if(data.Zodiac == 'Libra'){ temp = temp * 1.18 }
-              if(data.Zodiac == 'Sagittarius'){ temp = temp * 1.15 }
-              if(data.Zodiac == 'Aquarius'){ temp = temp * 1.09 }
+            if (data.Class == 'Soul Weaver') {
+                if (data.Zodiac == 'Libra') {
+                    temp = temp * 1.18
+                }
+                if (data.Zodiac == 'Sagittarius') {
+                    temp = temp * 1.15
+                }
+                if (data.Zodiac == 'Aquarius') {
+                    temp = temp * 1.09
+                }
             }
             return Math.floor(temp)
         },
         getHealth(data) {
-            var temp = ((50+1.4*data.Int)*21*1.375)+420
-            if(data.Class == 'Knight'){
-              if(data.Zodiac == 'Aries'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Cancer'){ temp = temp * 1.15 }
-              if(data.Zodiac == 'Libra'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Scorpio'){ temp = temp * 1.18 }
-              if(data.Zodiac == 'Sagittarius'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Pisces'){ temp = temp * 1.06 }
+            var temp = (50 + 1.4 * data.Int) * 21 * 1.375 + 420
+            if (data.Class == 'Knight') {
+                if (data.Zodiac == 'Aries') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Cancer') {
+                    temp = temp * 1.15
+                }
+                if (data.Zodiac == 'Libra') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Scorpio') {
+                    temp = temp * 1.18
+                }
+                if (data.Zodiac == 'Sagittarius') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Pisces') {
+                    temp = temp * 1.06
+                }
             }
-            if(data.Class == 'Warrior'){
-              if(data.Zodiac == 'Aries'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Cancer'){ temp = temp * 1.15 }
-              if(data.Zodiac == 'Libra'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Scorpio'){ temp = temp * 1.09 }
+            if (data.Class == 'Warrior') {
+                if (data.Zodiac == 'Aries') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Cancer') {
+                    temp = temp * 1.15
+                }
+                if (data.Zodiac == 'Libra') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Scorpio') {
+                    temp = temp * 1.09
+                }
             }
-            if(data.Class == 'Ranger'){
-              if(data.Zodiac == 'Leo'){ temp = temp * 1.09 }
+            if (data.Class == 'Ranger') {
+                if (data.Zodiac == 'Leo') {
+                    temp = temp * 1.09
+                }
             }
-            if(data.Class == 'Thief'){
-              if(data.Zodiac == 'Scorpio'){ temp = temp * 1.09 }
+            if (data.Class == 'Thief') {
+                if (data.Zodiac == 'Scorpio') {
+                    temp = temp * 1.09
+                }
             }
-            if(data.Class == 'Mage'){
-              if(data.Zodiac == 'Aquarius'){ temp = temp * 1.06 }
+            if (data.Class == 'Mage') {
+                if (data.Zodiac == 'Aquarius') {
+                    temp = temp * 1.06
+                }
             }
-            if(data.Class == 'Soul Weaver'){
-              if(data.Zodiac == 'Gemini'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Cancer'){ temp = temp * 1.18 }
-              if(data.Zodiac == 'Virgo'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Aquarius'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Pisces'){ temp = temp * 1.09 }
+            if (data.Class == 'Soul Weaver') {
+                if (data.Zodiac == 'Gemini') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Cancer') {
+                    temp = temp * 1.18
+                }
+                if (data.Zodiac == 'Virgo') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Aquarius') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Pisces') {
+                    temp = temp * 1.09
+                }
             }
             return Math.floor(temp)
         },
         getDefense(data) {
-            var temp = ((30+0.3*data.Fai)*8.5*1.375)
-            if(data.Class == 'Knight'){
-              if(data.Zodiac == 'Cancer'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Sagittarius'){ temp = temp * 1.06 }
-              if(data.Zodiac == 'Capricorn'){ temp = temp * 1.12 }
-              if(data.Zodiac == 'Pisces'){ temp = temp * 1.09 }
+            var temp = (30 + 0.3 * data.Fai) * 8.5 * 1.375
+            if (data.Class == 'Knight') {
+                if (data.Zodiac == 'Cancer') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Sagittarius') {
+                    temp = temp * 1.06
+                }
+                if (data.Zodiac == 'Capricorn') {
+                    temp = temp * 1.12
+                }
+                if (data.Zodiac == 'Pisces') {
+                    temp = temp * 1.09
+                }
             }
-            if(data.Class == 'Warrior'){
-              if(data.Zodiac == 'Aries'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Cancer'){ temp = temp * 1.09 }
-              if(data.Zodiac == 'Libra'){ temp = temp * 1.06 }
-              if(data.Zodiac == 'Scorpio'){ temp = temp * 1.06 }
-              if(data.Zodiac == 'Capricorn'){ temp = temp * 1.06 }
+            if (data.Class == 'Warrior') {
+                if (data.Zodiac == 'Aries') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Cancer') {
+                    temp = temp * 1.09
+                }
+                if (data.Zodiac == 'Libra') {
+                    temp = temp * 1.06
+                }
+                if (data.Zodiac == 'Scorpio') {
+                    temp = temp * 1.06
+                }
+                if (data.Zodiac == 'Capricorn') {
+                    temp = temp * 1.06
+                }
             }
-            if(data.Class == 'Soul Weaver'){
-              if(data.Zodiac == 'Cancer'){ temp = temp * 1.06 }
-              if(data.Zodiac == 'Libra'){ temp = temp * 1.06 }
-              if(data.Zodiac == 'Aquarius'){ temp = temp * 1.06 }
-              if(data.Zodiac == 'Pisces'){ temp = temp * 1.12 }
+            if (data.Class == 'Soul Weaver') {
+                if (data.Zodiac == 'Cancer') {
+                    temp = temp * 1.06
+                }
+                if (data.Zodiac == 'Libra') {
+                    temp = temp * 1.06
+                }
+                if (data.Zodiac == 'Aquarius') {
+                    temp = temp * 1.06
+                }
+                if (data.Zodiac == 'Pisces') {
+                    temp = temp * 1.12
+                }
             }
             return Math.floor(temp)
         },
         getSpeed(data) {
-            var temp = (60+data.Des/1.6)
-            if(data.Class == 'Knight'){
-              if(data.Zodiac == 'Aries'){ temp = temp + 4 }
-              if(data.Zodiac == 'Gemini'){ temp = temp + 6 }
-              if(data.Zodiac == 'Sagittarius'){ temp = temp + 6 }
+            var temp = 60 + data.Des / 1.6
+            if (data.Class == 'Knight') {
+                if (data.Zodiac == 'Aries') {
+                    temp = temp + 4
+                }
+                if (data.Zodiac == 'Gemini') {
+                    temp = temp + 6
+                }
+                if (data.Zodiac == 'Sagittarius') {
+                    temp = temp + 6
+                }
             }
-            if(data.Class == 'Warrior'){
-              if(data.Zodiac == 'Aries'){ temp = temp + 4 }
-              if(data.Zodiac == 'Virgo'){ temp = temp + 4 }
-              if(data.Zodiac == 'Sagittarius'){ temp = temp + 4 }
+            if (data.Class == 'Warrior') {
+                if (data.Zodiac == 'Aries') {
+                    temp = temp + 4
+                }
+                if (data.Zodiac == 'Virgo') {
+                    temp = temp + 4
+                }
+                if (data.Zodiac == 'Sagittarius') {
+                    temp = temp + 4
+                }
             }
-            if(data.Class == 'Ranger'){
-              if(data.Zodiac == 'Virgo'){ temp = temp + 4 }
-              if(data.Zodiac == 'Sagittarius'){ temp = temp + 12 }
-              if(data.Zodiac == 'Capricorn'){ temp = temp + 6 }
-              if(data.Zodiac == 'Aquarius'){ temp = temp + 4 }
+            if (data.Class == 'Ranger') {
+                if (data.Zodiac == 'Virgo') {
+                    temp = temp + 4
+                }
+                if (data.Zodiac == 'Sagittarius') {
+                    temp = temp + 12
+                }
+                if (data.Zodiac == 'Capricorn') {
+                    temp = temp + 6
+                }
+                if (data.Zodiac == 'Aquarius') {
+                    temp = temp + 4
+                }
             }
-            if(data.Class == 'Thief'){
-              if(data.Zodiac == 'Aries'){ temp = temp + 6 }
-              if(data.Zodiac == 'Taurus'){ temp = temp + 4 }
-              if(data.Zodiac == 'Aquarius'){ temp = temp + 6 }
-              if(data.Zodiac == 'Pices'){ temp = temp + 4 }
+            if (data.Class == 'Thief') {
+                if (data.Zodiac == 'Aries') {
+                    temp = temp + 6
+                }
+                if (data.Zodiac == 'Taurus') {
+                    temp = temp + 4
+                }
+                if (data.Zodiac == 'Aquarius') {
+                    temp = temp + 6
+                }
+                if (data.Zodiac == 'Pices') {
+                    temp = temp + 4
+                }
             }
-            if(data.Class == 'Mage'){
-              if(data.Zodiac == 'Taurus'){ temp = temp + 4 }
-              if(data.Zodiac == 'Leo'){ temp = temp + 6 }
-              if(data.Zodiac == 'Virgo'){ temp = temp + 6 }
-              if(data.Zodiac == 'Sagittarius'){ temp = temp + 4 }
-              if(data.Zodiac == 'Pices'){ temp = temp + 6 }
+            if (data.Class == 'Mage') {
+                if (data.Zodiac == 'Taurus') {
+                    temp = temp + 4
+                }
+                if (data.Zodiac == 'Leo') {
+                    temp = temp + 6
+                }
+                if (data.Zodiac == 'Virgo') {
+                    temp = temp + 6
+                }
+                if (data.Zodiac == 'Sagittarius') {
+                    temp = temp + 4
+                }
+                if (data.Zodiac == 'Pices') {
+                    temp = temp + 6
+                }
             }
-            if(data.Class == 'Soul Weaver'){
-              if(data.Zodiac == 'Gemini'){ temp = temp + 4 }
-              if(data.Zodiac == 'Virgo'){ temp = temp + 4 }
-              if(data.Zodiac == 'Sagittarius'){ temp = temp + 6 }
+            if (data.Class == 'Soul Weaver') {
+                if (data.Zodiac == 'Gemini') {
+                    temp = temp + 4
+                }
+                if (data.Zodiac == 'Virgo') {
+                    temp = temp + 4
+                }
+                if (data.Zodiac == 'Sagittarius') {
+                    temp = temp + 6
+                }
             }
             return Math.floor(temp)
-        },
+        }
+    },
+    computed: {
+        ...mapGetters('hero', ['search']),
+        heroSearchResults() {
+            return this.search(this.heroSearchForm)
+        }
     }
 }
 </script>
@@ -746,19 +919,18 @@ export default {
         width: 100vw;
     }
     .search-form {
-      width: 100vw;
+        width: 100vw;
     }
 }
 /* Reserved for side drawer content */
 .search-tags-container {
-  vertical-align: middle;
-  font-size: 12px;
-  line-height: 0px;
+    vertical-align: middle;
+    font-size: 12px;
+    line-height: 0px;
 }
 .search-tags-container img {
-  vertical-align: middle;
-  width: 20px;
-  height: 20px;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
 }
-
 </style>
