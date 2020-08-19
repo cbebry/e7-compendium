@@ -293,7 +293,6 @@ export default {
     data() {
         return {
             sidebarOpen: false,
-            // heroSearchResults: [],
             heroSearchForm: {
                 name: '',
                 elements: [],
