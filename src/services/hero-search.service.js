@@ -14,13 +14,13 @@ export default {
     search(heroData, { name, elements, classes, grades }) {
         console.log(`loaded ${heroData.length} entries from hero database`)
         const filteredData = heroData.filter((entry) => {
-            const queryMatchesName = entry.Name.toLowerCase().indexOf(name.toLowerCase()) > -1
+            const queryMatchesName = entry.name.toLowerCase().indexOf(name.toLowerCase()) > -1
             const queryMatchesElements =
-                elements.length === 0 || elements.indexOf(entry.Element.toLowerCase()) > -1
+                elements.length === 0 || elements.indexOf(entry.element.toLowerCase()) > -1
             const queryMatchesClasses =
-                classes.length === 0 || classes.indexOf(entry.Class.toLowerCase()) > -1
+                classes.length === 0 || classes.indexOf(entry.class.toLowerCase()) > -1
             const queryMatchesGrades =
-                grades.length === 0 || grades.indexOf(entry.Grade.toLowerCase()) > -1
+                grades.length === 0 || grades.indexOf(entry.grade.toLowerCase()) > -1
 
             return (
                 queryMatchesName &&
