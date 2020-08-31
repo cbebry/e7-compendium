@@ -1,20 +1,17 @@
 <template>
     <div id="app">
         <navigation></navigation>
-        <router-view/>
-        <the-footer></the-footer>
+        <router-view />
     </div>
 </template>
 
 <script>
 import Navigation from '@/components/Navigation'
-import TheFooter from '@/components/TheFooter'
 
 export default {
     name: 'app',
     components: {
-        Navigation,
-        TheFooter
+        Navigation
     }
 }
 </script>
@@ -31,5 +28,4 @@ body {
     overflow: hidden;
     background-color: #252b35;
 }
-
 </style>

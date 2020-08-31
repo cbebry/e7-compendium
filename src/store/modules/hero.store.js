@@ -9,8 +9,8 @@ const getters = {
         return heroSearchService.search(state.heroData, heroSearchForm)
     },
     getHeroProfile: (state) => (heroId) => {
-        const heroProfileFilter = state.heroData.filter(({ ID }) => {
-            return ID === heroId
+        const heroProfileFilter = state.heroData.filter(({ id }) => {
+            return id === heroId
         })
         return heroProfileFilter.length ? heroProfileFilter[0] : {}
     }
